@@ -1,52 +1,107 @@
 # ia-python
 
-Asistente conversacional de terminal en español. El programa mantiene el historial de la conversación durante la ejecución y envía los mensajes a la API de chat de OpenRouter usando el modelo configurado en el código.
+Asistente conversacional para terminal escrito en Python. Mantiene el
+historial de la conversación durante la ejecución y utiliza la API de chat
+de [OpenRouter](https://openrouter.ai/) para generar respuestas en español.
+
+## Características
+
+- Conversación interactiva desde la terminal.
+- Respuestas en español mediante un modelo configurable.
+- Historial de mensajes conservado mientras el programa está activo.
+- Lectura segura de la clave API desde un archivo `.env`.
+- Comandos de salida sencillos.
 
 ## Requisitos
 
-- Python instalado. El repositorio no especifica una versión mínima.
-- Una clave de API para utilizar el servicio de OpenRouter.
+- Python 3
+- Conexión a Internet
+- Una clave API de OpenRouter
 
 ## Instalación
 
-Desde la carpeta del proyecto, crea y activa un entorno virtual (opcional, pero recomendado):
+1. Clona el repositorio y entra en su carpeta:
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
+   ```powershell
+   git clone https://github.com/al0nso24/ia-python.git
+   cd ia-python
+   ```
 
-Instala las dependencias que utiliza el programa:
+2. Crea y activa un entorno virtual:
 
-```powershell
-python -m pip install requests python-dotenv
-```
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
 
-El repositorio no contiene un archivo de dependencias como `requirements.txt`; estos paquetes se identifican a partir de las importaciones de `agenteIA.py`.
+3. Instala las dependencias:
+
+   ```powershell
+   python -m pip install requests python-dotenv
+   ```
 
 ## Configuración
 
-Crea un archivo `.env` en la carpeta del proyecto y añade tu clave:
+Crea un archivo `.env` en la raíz del proyecto:
 
 ```dotenv
 API_KEY=tu_clave_de_openrouter
 ```
 
-`agenteIA.py` carga las variables de ese archivo mediante `python-dotenv` y utiliza `API_KEY` como credencial para las solicitudes a OpenRouter. No compartas ni subas el archivo `.env` al repositorio.
+Puedes obtener la clave desde el panel de OpenRouter. No compartas el valor
+de `API_KEY` ni lo subas a GitHub.
 
-## Ejecución
+## Uso
+
+Ejecuta el asistente:
 
 ```powershell
 python agenteIA.py
 ```
 
-Escribe un mensaje cuando aparezca `Tú:`. Para terminar, escribe `salir`, `bye`, `adiós` o `adios`.
+Escribe tu pregunta después de `Tú:`. Para finalizar la sesión, escribe:
 
-## Estructura
+- `salir`
+- `bye`
+- `adiós`
+- `adios`
+
+Ejemplo:
+
+```text
+Tú: Explícame qué es una API
+Asistente: Una API es...
+Tú: salir
+Nos vemos pronto :D
+```
+
+## Personalización
+
+El modelo predeterminado está definido dentro de `agenteIA.py`:
+
+```python
+"model": "arcee-ai/trinity-large-preview:free"
+```
+
+Puedes reemplazarlo por otro identificador de modelo disponible en
+OpenRouter. El programa habilita razonamiento ampliado mediante el
+parámetro `reasoning`.
+
+## Estructura del proyecto
 
 ```text
 .
-└── agenteIA.py   # Bucle de conversación y solicitudes a OpenRouter
+├── agenteIA.py   # Punto de entrada y lógica de conversación
+└── README.md     # Documentación del proyecto
 ```
 
-El modelo configurado en el código es `arcee-ai/trinity-large-preview:free`. El programa conserva el historial en memoria mientras se ejecuta; no se configura almacenamiento persistente.
+## Resolución de problemas
+
+| Problema | Posible solución |
+|---|---|
+| `ModuleNotFoundError` | Activa el entorno virtual y ejecuta `python -m pip install requests python-dotenv`. |
+| Error de autorización | Comprueba que `.env` contiene una clave válida en `API_KEY`. |
+| No aparece una respuesta | Verifica tu conexión, el estado de la API de OpenRouter y el identificador del modelo. |
+
+La conversación se conserva únicamente en memoria y se pierde al cerrar
+el programa. No utiliza almacenamiento persistente ni base de datos.
